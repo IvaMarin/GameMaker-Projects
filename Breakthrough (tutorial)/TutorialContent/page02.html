@@ -1,0 +1,140 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<!-- EDIT THIS-->
+		<title>GameMaker Tutorial</title>
+		<!-- DO NOT EDIT THIS-->
+		<meta http-equiv="X-UA-Compatible" content="IE=9" />
+		<link rel="stylesheet" href="style.css" type="text/css" media="screen" title="style" charset="UTF-8"/>
+		<script type="text/javascript">
+			var changePage = function(){
+				var newPage = document.getElementById("page-select");
+				window.location.replace(newPage.value);
+				}
+		</script>
+
+	</head>
+
+<!-- EDIT THIS - This section is where you can add an index to your tutorial -->
+<body>
+<!-- EDIT THIS - Your Tutorial title -->
+	<h2 style="border-radius:0.5em 0.5em 0 0; margin:0;">BreakThrough</h2>
+<!-- EDIT THIS - Here you list the pages in your tutorial, with the current one at the top -->
+		<div class="head">
+			<select id="page-select" onChange="changePage()">
+				<option value="page02.html"><b>Sprites</b></option>
+				<option value="page03.html">Brick Object</option>
+				<option value="page04.html">Bat Object</option>
+				<option value="page05.html">Ball Object</option>
+				<option value="page06.html">Rooms</option>
+				<option value="page07.html">Gameplay 1</option>
+				<option value="page08.html">Gameplay 2</option>
+				<option value="page09.html">Summary</option>
+				<optgroup label="----------------------------">
+					<option value="page01.html">Introduction</option>
+			  </optgroup>
+			</select>
+		</div>
+	
+<!-- EDIT THIS - Main tutorial body goes here -->
+<div class="body-scroll">
+	<p>
+		When using <i>GameMaker Studio 2</i>, all your visuals start off as <b>sprites</b>. These are simply images made up of pixels that we will draw to the screen to represent what is happening, and in the case of a "BreakThrough" game, we will need the following:
+		
+	<p>
+	<ul>
+		<li>A bat - This will be what the player moves to direct the ball</li><br>
+		<li>A ball - This will bounce around the screen and destroy bricks</li><br>
+		<li>Bricks - These are what you must destroy to complete the game</li><br>
+		<li>Borders - What the ball will bounce off so it doesn't go out the screen</li><br>
+	</ul>
+	
+	<p>
+		To create a sprite, go to the <b>Resource Tree</b>, then use the <i>Right Mouse Button</i> <img style="vertical-align:middle" src="Icon_RMB.png"> on the <b>Sprite</b> resource and select <b>Create Sprite</b>, then name the sprite "spr_Bat":
+	
+			<img class="center" src="02_01_Create_Sprite.gif" alt="Create A Sprite">
+
+	<p>
+		This will open the <b>Sprite Editor</b> window where we show the properties for the sprite:
+		
+			<img class="center" src="02_02_Sprite_Editor.png" alt="The Sprite Editor">
+		
+	<p>
+		The first thing we need to do is make a the sprite the correct size, as we don't want a square bat! For that click the <b>Resize Sprite</b> <img style="vertical-align:middle" src="Icon_Resize.png"> button and change the size of the sprite to 64 pixels wide by 16 pixels tall:
+		
+			<img class="center" src="02_03_Resize_Canvas.gif" alt="Resize Sprite Canvas">
+	
+	<p>
+		Back in the Sprite Editor again, click on the <i>Edit Image</i> button to open up the <b>Image Editor</b>. The Image Editor is used in <i>GameMaker Studio 2</i> to draw and edit all the graphical assets that make up your game. In this case we want to draw a "bat" for the game, so, use the different tools in the toolbox to do this now, specifically:
+		
+	<ul>
+		<li>The Fill tool <img style="vertical-align:middle" src="Icon_Fill.png">: Fill the canvas with a colour</li><br>
+		<li>The Rectangle tool <img style="vertical-align:middle" src="Icon_Rectangle.png">: Draw an outline around the canvas</li><br>
+		<li>The Eraser tool <img style="vertical-align:middle" src="Icon_Eraser.png">: Remove the corners to give the bat a "rounded" look</li><br>
+	</ul>
+	
+			<img class="center" src="02_04_MakeBat.gif" alt="Make The Bat Sprite">
+
+	<p>
+		You can take a moment if you wish to play around with the other draw tools (you can find full descriptions for each of them <a href="gms2tutorials:///ShowHelp?tag=image_view">in the manual</a>) to see what they can do or make the bat image prettier, then when you are finished simply close the image editor and the image will be saved and assigned to the bat sprite.
+		
+	<p>
+		We need to set the sprite <b>origin</b> now. This is the point where the sprite will be positioned within the room (think of it like pinning an image to a board... the origin is where you stick the pin) and we need to set it to the <i>Middle Center</i> position:
+		
+			<img class="center" src="02_05_SetOrigin.png" alt="Set The Sprite Origin">
+		
+	<p>
+		With that done, let's make the rest of the basic sprites for the game, starting with the bricks:
+		
+	<ul>
+		<li>Create a new sprite and call it "spr_Brick"</li><br>
+		<li>Click the "Resize" button <img style="vertical-align:middle" src="Icon_Resize.png"> and set the size to 32 width and 16 height</li><br>
+		<li>Click the "Edit Image" button and in the image editor fill the rectangle with <i>white</i> and give it a <i>black</i> border (we are going to colour the bricks programmatically so they need to be black and white)</li><br>
+		<li>Close the Image Editor and the Sprite Editor, without changing the origin of the sprite as it's fine set to the top left</li><br>
+	</ul>
+	
+			<img class="center" src="02_06_BrickSprite.png" alt="The Brick Sprite">
+	
+	<p>
+		The next sprite to make is for the ball, so go ahead and do the following:
+		
+	<ul>
+		<li>Create a new sprite and call it "spr_Ball"</li><br>
+		<li>Click the "Resize" button <img style="vertical-align:middle" src="Icon_Resize.png"> and set the size to 15 width and 15 height</li><br>
+		<li>Click the "Edit Image" button and in the image editor draw a filled circle of any colour. You can do this freehand or use the Ellipse tool <img style="vertical-align:middle" src="Icon_Ellipse.png"> </li><br>
+		<li>Close the Image Editor, and in the Sprite Editor set the origin to the <i>Middle Center</i> (like we did for the bat sprite)</li><br>
+	</ul>
+		
+			<img class="center" src="02_07_BallSprite.png" alt="The Ball Sprite">
+
+	<p>
+		Okay, that's all the sprites for now. Let's move on to creating some <b>objects</b> to use them!
+		
+<p>
+<br>
+</p>
+<p>
+
+</div>
+
+<div class="footer">
+	<div class="buttons">
+		<div class="clear">
+			<div style="float:left"> <!-- Set the previous  page to go to here -->
+				<a href="page01.html"  class="prev">
+					<div id="button-prev"></div>
+				</a>
+			</div>
+			<div style="float:right"> <!-- Button commented out as we are on the last page and can't go forward -->
+				<a href="page03.html" class="next">
+					<div id="button-next"></div>
+				</a>
+			</div>
+		</div>	
+	</div>
+<!-- Footer copyright notice - set this to your own or whatever is required (remove the text but leave the <h5> tags to just have the bar) -->
+<h5>&copy; Copyright YoYo Games Ltd. 2019 All Rights Reserved</h5>
+</div>
+
+</body>
+</html>

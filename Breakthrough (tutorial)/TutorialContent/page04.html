@@ -1,0 +1,151 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<!-- EDIT THIS-->
+		<title>GameMaker Tutorial</title>
+		<!-- DO NOT EDIT THIS-->
+		<meta http-equiv="X-UA-Compatible" content="IE=9" />
+		<link rel="stylesheet" href="style.css" type="text/css" media="screen" title="style" charset="UTF-8"/>
+		<script type="text/javascript">
+			var changePage = function(){
+				var newPage = document.getElementById("page-select");
+				window.location.replace(newPage.value);
+				}
+		</script>
+
+	</head>
+
+<!-- EDIT THIS - This section is where you can add an index to your tutorial -->
+<body>
+<!-- EDIT THIS - Your Tutorial title -->
+	<h2 style="border-radius:0.5em 0.5em 0 0; margin:0;">BreakThrough</h2>
+<!-- EDIT THIS - Here you list the pages in your tutorial, with the current one at the top -->
+		<div class="head">
+			<select id="page-select" onChange="changePage()">
+				<option value="page04.html"><b>Bat Object</b></option>
+				<option value="page05.html">Ball Object</option>
+				<option value="page06.html">Rooms</option>
+				<option value="page07.html">Gameplay 1</option>
+				<option value="page08.html">Gameplay 2</option>
+				<option value="page09.html">Summary</option>
+				<optgroup label="----------------------------">
+					<option value="page01.html">Introduction</option>
+					<option value="page02.html">Sprites</option>
+					<option value="page03.html">Brick Object</option>
+			  </optgroup>
+			</select>
+		</div>
+	
+<!-- EDIT THIS - Main tutorial body goes here -->
+<div class="body-scroll">
+	<p>
+		Now we'll create an object for the player to control, and in this case it's going to be a "bat" that will be used to bounce the ball back up the screen. For this, you need to:
+		
+	<ul>
+		<li>Create a new object (use the right mouse button <img style="vertical-align:middle" src="Icon_RMB.png"> on the Objects resource and select "Create Object")</li><br>
+		<li>Name the object "obj_Bat"</li><br>
+		<li>Assign the object the sprite "spr_Bat" (click the button with "No Sprite" and select "spr_Bat" from the asset manager)</li><br>
+		<li>Add a <b>Create Event</b> (click the <i>Add Event</i> button and select <b>Create</b>)</li><br>
+	</ul>
+	
+		<img class="center" src="04_01_Create_Bat.png" alt="The Bat Object">
+		
+	<p>
+		The Create event you've just added should contain the following code:
+		
+	<p class="code">
+		/// @description Init Vars<br>
+		spd = 7; // the base movement speed<br>
+	</p>
+
+	<p>
+		This object will also need a <b>Step Event</b> to check for keyboard input. Note that there are actually three types of step event: the <b>Begin</b>, the <b>Step</b> and the <b>End</b> events. You'll mostly use the main Step event for your game logic (the others are handy for games that require a more precise order of execution than our "BreakThrough" game), so go ahead and add that event that now and give it the following code:
+		
+	<p class="code">
+		/// @description Move<br>
+		if keyboard_check(vk_left) // Check for the left arrow key being held down<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;// This check is to make sure the bat doesn't go out of the room to the left<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;if x &gt; sprite_get_xoffset(sprite_index) + spd<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;x -= spd; // Move the bat<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;else<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;x = sprite_get_xoffset(sprite_index); // Clamp the bat to the leftmost side<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+		if keyboard_check(vk_right) // Check for the right arrow key being held down<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;// This check is to make sure the bat doesn't go out of the room to the right<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;if x &lt; room_width - sprite_get_xoffset(sprite_index) - spd<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;x += spd;<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;else<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;x = room_width - sprite_get_xoffset(sprite_index);<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+		// Move the ball object with the bat if the ball isn't moving yet<br>
+		with (obj_Ball)<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;if !go x = other.x;<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+	</p>
+		
+	<p>
+		Here we poll the keyboard for the left and right arrow keys and if one is held down we move the player left or right accordingly, all the while maintaining the bat within the room boundaries. Note that at the end of the code block, we call a couple of lines of code that will have the ball object "stick" to the player object when it's not moving. This means that at the start of the game the player can position the ball before pressing "space".
+		
+	<p>
+		That last bit of code targets the ball object, but we haven't actually got one yet! However, before we add that, let's take a moment to add a few sound effects to our game...
+		
+	<p>
+		We're going to add three sounds: a bounce sound, a break sound and a button sound. To start with, go to the resource tree and right click <img style="vertical-align:middle" src="Icon_RMB.png"> the "Sounds" resource and select <i>Create</i>. This will open the <b>Sound Editor</b>:
+		
+			<img class="center" src="04_02_CreateSound.png" alt="The Sound Editor">
+		
+	<p>
+		Name the sound "<b>snd_Bounce</b>" and then click file explorer button <img style="vertical-align:middle" src="Icon_Browse.png"> and browse to an appropriate sound (it should be <tt>*.wav</tt> format, and you can find example sounds in the "Tutorial Resources" folder that has been created as <a href='gms2tutorials:///ShowFiles?path=../TutorialResources'>part of the tutorial in the project directory</a>) then add it. We don't need to change any other settings here, so close this window.
+		
+	<p>
+		Now create two more sounds and name them "<b>snd_Break</b>" and "<b>snd_Click</b>" and add appropriate sounds for them.
+		
+	<p>
+		With that done, we can move on to creating the ball object.
+		
+		
+		
+		
+		
+		
+
+		
+<p>
+<br>
+</p>
+<p>
+
+</div>
+
+<div class="footer">
+	<div class="buttons">
+		<div class="clear">
+			<div style="float:left"> <!-- Set the previous  page to go to here -->
+				<a href="page03.html"  class="prev">
+					<div id="button-prev"></div>
+				</a>
+			</div>
+			<div style="float:right"> <!-- Button commented out as we are on the last page and can't go forward -->
+				<a href="page05.html" class="next">
+					<div id="button-next"></div>
+				</a>
+			</div>
+		</div>	
+	</div>
+<!-- Footer copyright notice - set this to your own or whatever is required (remove the text but leave the <h5> tags to just have the bar) -->
+<h5>&copy; Copyright YoYo Games Ltd. 2019 All Rights Reserved</h5>
+</div>
+
+</body>
+</html>

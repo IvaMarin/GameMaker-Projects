@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<!-- DO NOT EDIT: You should ONLY change the URL for the video or playlist in this file and NOTHING else -->
+<body>
+	<iframe 
+		id="existing-iframe-example"
+		src="https://www.youtube.com/embed/videoseries?list=PLhIbBGhnxj5J2Oos_O07L28oH9EqqHsxH"	
+		frameborder="0"
+		style="overflow:hidden;overflow-x:hidden;overflow-y:hidden;height:100%;width:100%;position:absolute;top:0px;left:0px;right:0px;bottom:0px" 
+		height="100%" width="100%"
+	></iframe>
+<!--
+NOTE! You can also use a PLAYLIST URL from YouTube instead of a single video URL in the iFrame above, for example:
+src="https://www.youtube.com/embed/videoseries?list=PLhIbBGhnxj5IcGWhJQNF5hScmCCn4M3xg&enablejsapi=1"
+There are special links that will permit you to change the playlist video within your tutorial listed below
+!-->
+
+<a id="return_link" href='gms2tutorials:///ReturnVideoPosition?index=0&seconds=0'></a>
+
+<script type="text/javascript">
+  var tag = document.createElement('script');
+  tag.id = 'iframe-demo';
+  tag.src = 'https://www.youtube.com/iframe_api';
+  var firstScriptTag = document.getElementsByTagName('script')[0];
+  firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+  var player;
+  function onYouTubeIframeAPIReady() {
+    player = new YT.Player('existing-iframe-example', {
+        events: {
+          'onReady': onPlayerReady,
+          'onStateChange': onPlayerStateChange
+        }
+    });
+  }
+    function onPlayerReady(event) {
+        // Return player ready status
+        var dummyLink = document.getElementById('return_link');
+        dummyLink.href = "gms2tutorials:///OnPlayerReady";
+        dummyLink.click();
+    }
+  
+    function onPlayerStateChange(event) {
+    //send video ended event
+                if (event.data == YT.PlayerState.ENDED) {
+                                var index = player.getPlaylistIndex();
+                                var dummyLink = document.getElementById('return_link');
+                                dummyLink.href = "gms2tutorials:///OnPlayerEnded?index="+index;
+                                dummyLink.click();
+                }
+    }
+
+    // Stop currently playing video
+    function stopVideo() 
+    {
+        player.stopVideo();
+    }
+   
+    // Start playlist video index (0-based)
+    function playVideoAt(_index)
+    {
+        player.playVideoAt(_index);
+    }
+    
+    // Set the video playback position in seconds
+    function seekTo( _seconds )
+    {
+        player.seekTo( _seconds, true );
+    }
+    
+    // Query video playlist index and playback position, and return via schema link
+    function getVideoPosition()
+    {
+        var seconds = Math.floor( player.getCurrentTime() );
+        var index = player.getPlaylistIndex();
+        //->return video position by activating schema link
+        var dummyLink = document.getElementById('return_link');
+        dummyLink.href = "gms2tutorials:///ReturnVideoPosition?index="+index+"&seconds="+seconds;
+        dummyLink.click();
+    }
+    
+</script>
+
+<!-- SCHEMA LINKS - These are special links that you can have in your tutorial to automatically skip to any time in a single video, or any video in the playlist (if a playlist is used).
+
+<a href='gms2tutorials:///SetVideoPosition?seconds=120'>Set video position to 2 minutes</a>
+
+<a href='gms2tutorials:///SetVideoPosition?index=3'>Start video 4 in the playlist (playlist values start at 0)</a>
+
+<a href='gms2tutorials:///SetVideoPosition?index=4&seconds=60'>Start video 5 in the playlist, and set position to 60 seconds in</a>
+-->
+
+</body>
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<!-- EDIT THIS-->
+		<title>GameMaker Tutorial</title>
+		<!-- DO NOT EDIT THIS-->
+		<meta http-equiv="X-UA-Compatible" content="IE=9" />
+		<link rel="stylesheet" href="style.css" type="text/css" media="screen" title="style" charset="UTF-8"/>
+		<script type="text/javascript">
+			var changePage = function(){
+				var newPage = document.getElementById("page-select");
+				window.location.replace(newPage.value);
+				}
+		</script>
+
+	</head>
+
+<!-- EDIT THIS - This section is where you can add an index to your tutorial -->
+<body>
+<!-- EDIT THIS - Your Tutorial title -->
+	<h2 style="border-radius:0.5em 0.5em 0 0; margin:0;">BreakThrough</h2>
+<!-- EDIT THIS - Here you list the pages in your tutorial, with the current one at the top -->
+		<div class="head">
+			<select id="page-select" onChange="changePage()">
+				<option value="page09.html"><b>Summary</b></option>
+				<optgroup label="----------------------------">
+					<option value="page01.html">Introduction</option>
+					<option value="page02.html">Sprites</option>
+					<option value="page03.html">Brick Object</option>
+					<option value="page04.html">Bat Object</option>
+					<option value="page05.html">Ball Object</option>
+					<option value="page06.html">Rooms</option>
+					<option value="page07.html">Gameplay 1</option>
+					<option value="page08.html">Gameplay 2</option>
+			  </optgroup>
+			</select>
+		</div>
+	
+<!-- EDIT THIS - Main tutorial body goes here -->
+<div class="body-scroll">
+	<p>
+		If all has gone well, you should now be playing a your own, complete, version of BreakThrough!
+		
+			<img class="center" src="09_01_BreakThrough.gif" alt="BreakThrough!">	
+
+	<p>
+		Now what? Well, you have a firm base on which to build so why not take some time to try things out based on what you've learned so far? Here are some suggestions for you:
+		
+	<p>
+	<ul>
+		<li><b>Add more sounds</b> - We should have a sound for when the ball leaves the room and also for when the player gets a powerup, so why not add them?</li><br>
+		
+		<li><b>Add more powerups</b> - Adding more powerups should be fairly easy now. Add a new image to the powerup sprite, add the frame number into the <tt>choose</tt> on Create, and then edit the <tt>switch</tt> in the collision event to do something. Maybe have one to make the bat smaller? Or try making one which has the ball pass through and destroy bricks rather than bounce off them?</li><br>
+		
+		<li><b>Add a background</b> - The game is played over a simple black background, by why not add your own colourful one? You'll need a 640x480 sized sprite and then set it in the Room Editor to the Background layer.</li><br>
+		
+		<li><b>Make proper levels</b> - At the moment the game is played on a single level that regenerates, but why not try making custom levels? You'll need to make more rooms, add the instances to them, and then in the controller object set it to go to another room instead restarting the current one when no bricks are left.</li><br>
+				
+	</ul>
+		
+	<p>
+		Those are just a few things that you can do with a base like this, but there is so much more! You could try adding a title screen and menu, or making a pause mechanism, or even adding persistent leaderboards and achievements... The list could go on and on, but the important thing is that you learn how to make games using <i>GameMaker Studio 2</i> and, above all else, you have fun doing it!
+		
+		<div class="tutorials">
+			<a href="gms2tutorials:///GetTutorials"> <div id="tutorial-button"></div> </a>
+		</div>
+				
+		
+<p>
+<br>
+</p>
+<p>
+
+</div>
+
+<div class="footer">
+	<div class="buttons">
+		<div class="clear">
+			<div style="float:left"> <!-- Set the previous  page to go to here -->
+				<a href="page08.html"  class="prev">
+					<div id="button-prev"></div>
+				</a>
+			</div>
+			<div style="float:right"> <!-- Button commented out as we are on the last page and can't go forward 
+				<a href="page09.html" class="next">
+					<div id="button-next"></div>
+				</a>-->
+			</div>
+		</div>	
+	</div>
+<!-- Footer copyright notice - set this to your own or whatever is required (remove the text but leave the <h5> tags to just have the bar) -->
+<h5>&copy; Copyright YoYo Games Ltd. 2019 All Rights Reserved</h5>
+</div>
+
+</body>
+</html>

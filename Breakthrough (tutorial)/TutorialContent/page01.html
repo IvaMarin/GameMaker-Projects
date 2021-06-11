@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<!-- EDIT THIS-->
+		<title>GameMaker Tutorial</title>
+		<!-- DO NOT EDIT THIS-->
+		<meta http-equiv="X-UA-Compatible" content="IE=9" />
+		<link rel="stylesheet" href="style.css" type="text/css" media="screen" title="style" charset="UTF-8"/>
+		<script type="text/javascript">
+			var changePage = function(){
+				var newPage = document.getElementById("page-select");
+				window.location.replace(newPage.value);
+				}
+		</script>
+
+	</head>
+
+<!-- EDIT THIS - This section is where you can add an index to your tutorial -->
+<body>
+<!-- EDIT THIS - Your Tutorial title -->
+	<h2 style="border-radius:0.5em 0.5em 0 0; margin:0;">BreakThrough</h2>
+<!-- EDIT THIS - Here you list the pages in your tutorial, with the current one at the top -->
+		<div class="head">
+			<select id="page-select" onChange="changePage()">
+				<option value="page01.html"><b>Introduction</b></option>
+				<option value="page02.html">Sprites</option>
+				<option value="page03.html">Brick Object</option>
+				<option value="page04.html">Bat Object</option>
+				<option value="page05.html">Ball Object</option>
+				<option value="page06.html">Rooms</option>
+				<option value="page07.html">Gameplay 1</option>
+				<option value="page08.html">Gameplay 2</option>
+				<option value="page09.html">Summary</option>
+			</select>
+		</div>
+	
+<!-- EDIT THIS - Main tutorial body goes here -->
+<div class="body-scroll">
+	<p>
+		Welcome to the BreakThrough tutorial! This tutorial is designed to get you up and running using <i>GameMaker Studio 2</i> in as short a time as possible and will take you through the steps required to make a "breakout" style game. In this tutorial you'll be making a basic but playable version of the game from scratch using <b>GML</b> (the GameMaker Language). Should you prefer a more visual approach to game making, this tutorial is available using DnD&trade; from the <i>Tutorials</i> section of the <b>Start Page</b> when you open <i>GameMaker Studio 2</i>.
+		
+			<img class="center" src="01_01_BreakThrough.png" alt="BreakThrough Final Game">
+		
+	<p>
+		Click the <i>Next</i> button at the bottom and we'll get started making some <b>sprites</b> for the game...
+		
+	<p>
+		<div class="note">
+			<b>NOTE</b>: If the images in this tutorial appear too small, or the code examples seem too bunched up, then you can click the side of the dock and drag it towards the workspace to make the visible area larger. This will scale up the images and make them easier to see, and correct any formatting issues with the code being shown.
+		</div>
+		
+<p>
+<br>
+</p>
+<p>
+
+</div>
+
+<div class="footer">
+	<div class="buttons">
+		<div class="clear">
+			<div style="float:left"> <!-- Set the previous  page to go to here -->
+				<!--<a href="page01.html"  class="prev">
+					<div id="button-prev"></div>
+				</a>-->
+			</div>
+			<div style="float:right"> <!-- Button commented out as we are on the last page and can't go forward -->
+				<a href="page02.html" class="next">
+					<div id="button-next"></div>
+				</a>
+			</div>
+		</div>	
+	</div>
+<!-- Footer copyright notice - set this to your own or whatever is required (remove the text but leave the <h5> tags to just have the bar) -->
+<h5>&copy; Copyright YoYo Games Ltd. 2019 All Rights Reserved</h5>
+</div>
+
+</body>
+</html>

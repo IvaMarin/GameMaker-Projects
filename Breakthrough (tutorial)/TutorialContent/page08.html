@@ -1,0 +1,159 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<!-- EDIT THIS-->
+		<title>GameMaker Tutorial</title>
+		<!-- DO NOT EDIT THIS-->
+		<meta http-equiv="X-UA-Compatible" content="IE=9" />
+		<link rel="stylesheet" href="style.css" type="text/css" media="screen" title="style" charset="UTF-8"/>
+		<script type="text/javascript">
+			var changePage = function(){
+				var newPage = document.getElementById("page-select");
+				window.location.replace(newPage.value);
+				}
+		</script>
+
+	</head>
+
+<!-- EDIT THIS - This section is where you can add an index to your tutorial -->
+<body>
+<!-- EDIT THIS - Your Tutorial title -->
+	<h2 style="border-radius:0.5em 0.5em 0 0; margin:0;">BreakThrough</h2>
+<!-- EDIT THIS - Here you list the pages in your tutorial, with the current one at the top -->
+		<div class="head">
+			<select id="page-select" onChange="changePage()">
+				<option value="page08.html"><b>Gameplay 2</b></option>
+				<option value="page09.html">Summary</option>
+				<optgroup label="----------------------------">
+					<option value="page01.html">Introduction</option>
+					<option value="page02.html">Sprites</option>
+					<option value="page03.html">Brick Object</option>
+					<option value="page04.html">Bat Object</option>
+					<option value="page05.html">Ball Object</option>
+					<option value="page06.html">Rooms</option>
+					<option value="page07.html">Gameplay 1</option>
+			  </optgroup>
+			</select>
+		</div>
+	
+<!-- EDIT THIS - Main tutorial body goes here -->
+<div class="body-scroll">
+	<p>
+		The way our BreakThrough game is right now, you could probably consider it finished, and it is to a certain extent, but it's missing one final thing to make it into a "proper" BreakThrough game... powerups! So we're going to add them now.
+		
+	<p>
+		To start with, create a new sprite and set the size to 32 width and 16 height and call it "<b>spr_Powers</b>". Open the sprite in the <b>Image Editor</b> and draw two arrows, something like this:
+		
+			<img class="center" src="08_01_ExpandImage.png" alt="Expand Bat Icon">	
+
+	<p>
+		We're going to add another image to this sprite to be used in a second powerup type. For that click the large "plus" icon to create another frame:
+		
+			<img class="center" src="08_02_NewFrame.gif" alt="Add New Frame">	
+
+	<p>
+		The next frame should have two arrows pointing down, something like this:
+		
+			<img class="center" src="08_03_SlowDown.png" alt="Slow Down Ball Icon">	
+			
+	<p>
+		Now create a new object and call it "<b>obj_PowerUp</b>". Assign it the sprite we've just made, then add a <b>Create Event</b> with the following code:
+		
+	<p class="code">
+		/// @description Init Vars<br>
+		image_index = choose(0, 1); // Choose which type of powerup it will be<br>
+		image_speed = 0; // Set the sprite to not animate<br>
+		speed = 5; // Set the speed<br>
+		direction = 270; // set the direction<br>
+	</p>
+	
+	<p>
+		This code will select a sprite frame to use for the powerup and set it moving down the screen. We need to remove the instance from the game if it is no longer visible, so the next thing to add is an <b>Outside Room</b> event (from the <b>Other</b> category) with this code:
+		
+	<p class="code">
+		/// @description Clean Up<br>
+		instance_destroy();<br>
+	</p>
+	
+	<p>
+		Finally, we need to add a <b>Collision Event</b> with the object "<b>obj_Bat</b>". In this event we're going to have the game change based on the image index (frame) of the sprite that the powerup uses. In this case, frame 0 will make the player bat larger, and frame 1 will slow the ball down. The code to do this is as follows (and should be added to the event):
+		
+	<p class="code">
+		/// @description Powerup!<br>
+		switch(image_index) // Check to see what frame is being used by the sprite<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;case 0: // Make the player bat bigger<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;with (obj_Bat)<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;image_xscale = 1.5;<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;alarm[0] = room_speed * 10;<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break;<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;case 1: // Slow down the ball<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;with (obj_Ball)<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;speed = spd;<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break;<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+		instance_destroy();<br>
+	</p>
+	
+	<p>
+		With this code, if the powerup uses frame 0 then we set the player controlled Bat object to scale along the x-axis (stretching it), or if the frame is 1 we set the ball speed back to it's original speed. Note that if it's frame 0 we also call an <b>Alarm Event</b> in the player object. This event won't run immediately, but will instead count down for 10 seconds before running (our game has an FPS of 60, so <tt>room_speed</tt> equals 1 second of time).
+		
+	<p>
+		Let's add that Alarm event now, so open up the object "<b>obj_Bat</b>" and add an <b>Alarm[0]</b> event:
+		
+			<img class="center" src="08_04_AlarmEvent.png" alt="The Alarm[0] Event">	
+
+	<p>
+		And here we place this code:
+		
+	<p class="code">
+		/// @description Reset Size<br>
+		image_xscale = 1;<br>
+	</p>
+	
+	<p>
+		The last thing we need to do for the game to be finished is have the Brick objects spawn one of the powerups. So open up the object "<b>obj_Brick</b>" and give it a <b>Destroy Event</b> with the following code:
+		
+	<p class="code">
+		/// @description Create Powerup<br>
+		if irandom(2) == 0<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;instance_create_layer(x, y, layer, obj_PowerUp);<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+	</p>
+	
+	<p>
+		Press the Play <img style="vertical-align:middle" src="Icon_Play.png"> button now to see the game running... And then give yourself a pat on the back for having created a complete game in virtually no time!
+		
+<p>
+<br>
+</p>
+<p>
+
+</div>
+
+<div class="footer">
+	<div class="buttons">
+		<div class="clear">
+			<div style="float:left"> <!-- Set the previous  page to go to here -->
+				<a href="page07.html"  class="prev">
+					<div id="button-prev"></div>
+				</a>
+			</div>
+			<div style="float:right"> <!-- Button commented out as we are on the last page and can't go forward -->
+				<a href="page09.html#LastPage" class="next">
+					<div id="button-next"></div>
+				</a>
+			</div>
+		</div>	
+	</div>
+<!-- Footer copyright notice - set this to your own or whatever is required (remove the text but leave the <h5> tags to just have the bar) -->
+<h5>&copy; Copyright YoYo Games Ltd. 2019 All Rights Reserved</h5>
+</div>
+
+</body>
+</html>

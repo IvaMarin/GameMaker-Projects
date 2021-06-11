@@ -1,0 +1,111 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<!-- EDIT THIS-->
+		<title>GameMaker Tutorial</title>
+		<!-- DO NOT EDIT THIS-->
+		<meta http-equiv="X-UA-Compatible" content="IE=9" />
+		<link rel="stylesheet" href="style.css" type="text/css" media="screen" title="style" charset="UTF-8"/>
+		<script type="text/javascript">
+			var changePage = function(){
+				var newPage = document.getElementById("page-select");
+				window.location.replace(newPage.value);
+				}
+		</script>
+
+	</head>
+
+<!-- EDIT THIS - This section is where you can add an index to your tutorial -->
+<body>
+<!-- EDIT THIS - Your Tutorial title -->
+	<h2 style="border-radius:0.5em 0.5em 0 0; margin:0;">BreakThrough</h2>
+<!-- EDIT THIS - Here you list the pages in your tutorial, with the current one at the top -->
+		<div class="head">
+			<select id="page-select" onChange="changePage()">
+				<option value="page06.html"><b>Rooms</b></option>
+				<option value="page07.html">Gameplay 1</option>
+				<option value="page08.html">Gameplay 2</option>
+				<option value="page09.html">Summary</option>
+				<optgroup label="----------------------------">
+					<option value="page01.html">Introduction</option>
+					<option value="page02.html">Sprites</option>
+					<option value="page03.html">Brick Object</option>
+					<option value="page04.html">Bat Object</option>
+					<option value="page05.html">Ball Object</option>
+			  </optgroup>
+			</select>
+		</div>
+	
+<!-- EDIT THIS - Main tutorial body goes here -->
+<div class="body-scroll">
+	<p>
+		When making a game in <i>GameMaker Studio 2</i>, it requires at least one room to run, and so <i>GameMaker</i> always adds a room to your new projects. In this case it's called "room0" and can be found in the Resource Tree <b>Rooms</b> section. Like all other resources, you can add further rooms by using the right mouse button menu and selecting "Create Room", but for our game, we'll only need one so let's just edit that.
+		
+	<p>
+		To start with, double click on the room in the resource tree to open the room editor:
+		
+			<img class="center" src="06_01_RoomEditor.png" alt="The Room Editor">
+
+	<p>	
+		Everything that you place into the room is placed onto a layer, and you can see that there are two layers pre-created for you - one for "Instances" and one for the "Background". You don't need to add any other layers as these are fine for what we're making, so click on the "Instances" layer to select it ready for adding our game objects to.
+		
+	<div class="note">
+		<b>NOTE</b>: It's important to understand that you don't actually place objects directly into the game rooms, but rather you place <b>instances</b> of these objects which are basically copies (or clones if you prefer) of the object resource. So, in a typical game, all the characters, monsters, balls, walls, etc... are all objects you create in the resource tree, which you then place as an <i>instance</i> in the Room Editor. This instance can then be changed in the room editor itself or through code, so that it can be scaled, or coloured, or have other details modified from the "base" object. So when we talk about something affecting or changing an <b>instance</b>, we mean it affects that one particular copy of an object in a room, but, when we talk about affecting or changing an <b>object</b>, we mean that we are modifying the object in the resource tree and anything we do to it will be reflected in all the instances created from that point on too. So, the object is the template for the instance, and the instance is what we place in a room to make our game.
+	</div>
+	
+	<p>
+		To start with, lets make the room a little smaller. The default size is a playing area of 1024x768 pixels, but we want to set it to 640x480. This is done from the <b>Room Properties</b> tab:
+		
+			<img class="center" src="06_02_RoomSize.gif" alt="Changing The Room Size">
+		
+	<p>
+		We now want to place some brick instances into the room. To make things easier, you should set the editor grid to be 32x16 rather than 32x32:
+		
+			<img class="center" src="06_03_GridSettings.gif" alt="Grid Settings">
+		
+	<p>
+		To add a brick, simply click <img style="vertical-align:middle" src="Icon_LMB.png"> the object "obj_Brick" and then drag it onto the room to the position you want:
+		
+			<img class="center" src="06_04_AddBricks.gif" alt="Add Bricks To The Room">
+		
+	<p>
+		It can be time consuming to constantly drag instances of objects from the Resource Tree, so instead you can simply select the brick object and then "paint" it into the room by holding down <img style="vertical-align:middle" src="Icon_ALT.png"> and then clicking <img style="vertical-align:middle" src="Icon_LMB.png"> and dragging where you want:
+
+			<img class="center" src="06_05_PaintBricks.gif" alt="Paint Bricks In The Room">
+		
+	<p>
+		Add about 6 layers of bricks, and then add a single instance of the ball object and then a single instance of the bat object. Your room should now look like this:
+		
+			<img class="center" src="06_06_FinalRoom.png" alt="The Finished Room">
+	
+	<p>
+		Time to test the game out!
+		
+<p>
+<br>
+</p>
+<p>
+
+</div>
+
+<div class="footer">
+	<div class="buttons">
+		<div class="clear">
+			<div style="float:left"> <!-- Set the previous  page to go to here -->
+				<a href="page05.html"  class="prev">
+					<div id="button-prev"></div>
+				</a>
+			</div>
+			<div style="float:right"> <!-- Button commented out as we are on the last page and can't go forward -->
+				<a href="page07.html" class="next">
+					<div id="button-next"></div>
+				</a>
+			</div>
+		</div>	
+	</div>
+<!-- Footer copyright notice - set this to your own or whatever is required (remove the text but leave the <h5> tags to just have the bar) -->
+<h5>&copy; Copyright YoYo Games Ltd. 2019 All Rights Reserved</h5>
+</div>
+
+</body>
+</html>

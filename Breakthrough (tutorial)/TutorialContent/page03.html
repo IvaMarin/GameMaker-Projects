@@ -1,0 +1,110 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<!-- EDIT THIS-->
+		<title>GameMaker Tutorial</title>
+		<!-- DO NOT EDIT THIS-->
+		<meta http-equiv="X-UA-Compatible" content="IE=9" />
+		<link rel="stylesheet" href="style.css" type="text/css" media="screen" title="style" charset="UTF-8"/>
+		<script type="text/javascript">
+			var changePage = function(){
+				var newPage = document.getElementById("page-select");
+				window.location.replace(newPage.value);
+				}
+		</script>
+
+	</head>
+
+<!-- EDIT THIS - This section is where you can add an index to your tutorial -->
+<body>
+<!-- EDIT THIS - Your Tutorial title -->
+	<h2 style="border-radius:0.5em 0.5em 0 0; margin:0;">BreakThrough</h2>
+<!-- EDIT THIS - Here you list the pages in your tutorial, with the current one at the top -->
+		<div class="head">
+			<select id="page-select" onChange="changePage()">
+				<option value="page03.html"><b>Brick Object</b></option>
+				<option value="page04.html">Bat Object</option>
+				<option value="page05.html">Ball Object</option>
+				<option value="page06.html">Rooms</option>
+				<option value="page07.html">Gameplay 1</option>
+				<option value="page08.html">Gameplay 2</option>
+				<option value="page09.html">Summary</option>
+				<optgroup label="----------------------------">
+					<option value="page01.html">Introduction</option>
+					<option value="page02.html">Sprites</option>
+			  </optgroup>
+			</select>
+		</div>
+	
+<!-- EDIT THIS - Main tutorial body goes here -->
+<div class="body-scroll">
+	<p>
+		We are now going to make our game <b>objects</b>. Objects are the resource that we use to control aspects of a game and to do specific things. They can be given a sprite, have behaviours, and they can be instructed to react to certain game events as well as to each other. 
+		
+	<p>
+		So, let's make our first object! This object is going to be for the "bricks" that we want our player to break. To create this, go ahead and right-click <img style="vertical-align:middle" src="Icon_RMB.png"> on the <b>Objects</b> resource in the resource tree and select "Create Object". This will open up the Object Editor:
+		
+			<img class="center" src="03_01_Create_Object.png" alt="The Object Editor">
+			
+	<p>
+		In the "Name" section give the object the name "obj_Brick", then click the button labelled "<i>No Sprite</i>". This will open the <b>Asset Explorer</b> where you can select the brick sprite that you drew previously:
+		
+			<img class="center" src="03_02_AddSprite.gif" alt="Adding A Sprite To An Object">
+
+	<p>
+		We don't need to change any other properties for this object, and can now move on to adding some <b>Events</b>. An Event is simply a moment within the game loop when something happens. The main ones are:
+		
+		<ul>
+			<li><b>Create</b>: This is triggered the first time an instance of the object is created in a room and is where you would initialise variables and set values etc...</li><br>
+			<li><b>Step</b>: Each game step (or frame) this event will be triggered, and it's where you would place the majority of the objects logic</li><br>
+			<li><b>Draw</b>: This is where things are drawn. If you have no code in this event, then <i>GameMaker Studio 2</i> will automatically draw whatever sprite is assigned to the object</li><br>
+			<li><b>Destroy</b>: This event is only triggered when an instance of the object is destroyed (removed from the room) and can be used for a variety of tasks like creating an explosion, or adding score, or playing a sound, etc...</li><br>
+		</ul>
+		
+	<p>
+		For more detailed information on all of the events that an object can have, please <a href="gms2tutorials:///ShowHelp?tag=events">see the manual</a>.
+		
+	<p>
+		In the case of our brick object, we will need to use the <b>Create Event</b> only (for now), so in the Event window, click the <i>Add Event</i> button and select <b>Create</b>. This event will now be added and a code window will open up ready for you to add your code to it. In this case we want to add the following:
+		
+	<p class="code">
+		/// @description Set Colour<br>
+		image_blend = choose(c_red, c_yellow, c_blue, c_green, c_fuchsia, c_orange);<br>
+	</p>
+	
+			<img class="center" src="03_03_BrickCreate.png" alt="Brick Object Create Event">
+
+	<p>
+		The <tt>image_blend</tt> variable is a built-in variable that controls the colour to be blended with the object sprite. In this case we are telling <i>GameMaker Studio 2</i> to choose from one of six colours, and this will make our bricks all be different colours when they are created in a room.
+		
+	<p>
+		With that done, you can close the Object Editor for the brick, and we can move on to creating the ball object...
+		
+<p>
+<br>
+</p>
+<p>
+
+</div>
+
+<div class="footer">
+	<div class="buttons">
+		<div class="clear">
+			<div style="float:left"> <!-- Set the previous  page to go to here -->
+				<a href="page02.html"  class="prev">
+					<div id="button-prev"></div>
+				</a>
+			</div>
+			<div style="float:right"> <!-- Button commented out as we are on the last page and can't go forward -->
+				<a href="page04.html" class="next">
+					<div id="button-next"></div>
+				</a>
+			</div>
+		</div>	
+	</div>
+<!-- Footer copyright notice - set this to your own or whatever is required (remove the text but leave the <h5> tags to just have the bar) -->
+<h5>&copy; Copyright YoYo Games Ltd. 2019 All Rights Reserved</h5>
+</div>
+
+</body>
+</html>

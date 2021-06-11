@@ -1,0 +1,204 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<!-- EDIT THIS-->
+		<title>GameMaker Tutorial</title>
+		<!-- DO NOT EDIT THIS-->
+		<meta http-equiv="X-UA-Compatible" content="IE=9" />
+		<link rel="stylesheet" href="style.css" type="text/css" media="screen" title="style" charset="UTF-8"/>
+		<script type="text/javascript">
+			var changePage = function(){
+				var newPage = document.getElementById("page-select");
+				window.location.replace(newPage.value);
+				}
+		</script>
+
+	</head>
+
+<!-- EDIT THIS - This section is where you can add an index to your tutorial -->
+<body>
+<!-- EDIT THIS - Your Tutorial title -->
+	<h2 style="border-radius:0.5em 0.5em 0 0; margin:0;">BreakThrough</h2>
+<!-- EDIT THIS - Here you list the pages in your tutorial, with the current one at the top -->
+		<div class="head">
+			<select id="page-select" onChange="changePage()">
+				<option value="page05.html"><b>Ball Object</b></option>
+				<option value="page06.html">Rooms</option>
+				<option value="page07.html">Gameplay 1</option>
+				<option value="page08.html">Gameplay 2</option>
+				<option value="page09.html">Summary</option>
+				<optgroup label="----------------------------">
+					<option value="page01.html">Introduction</option>
+					<option value="page02.html">Sprites</option>
+					<option value="page03.html">Brick Object</option>
+					<option value="page04.html">Bat Object</option>
+			  </optgroup>
+			</select>
+		</div>
+	
+<!-- EDIT THIS - Main tutorial body goes here -->
+<div class="body-scroll">
+	<p>
+		To complete our game, we need a ball object. So for that, do the following:
+		
+	<ul>
+		<li>Create a new object (use the right mouse button <img style="vertical-align:middle" src="Icon_RMB.png"> on the Objects resource and select "Create Object")</li><br>
+		<li>Name the object "obj_Ball"</li><br>
+		<li>Assign the object the sprite "spr_Ball" (click the button with "No Sprite" and select "spr_Ball" from the asset manager)</li><br>
+		<li>Add a <b>Create Event</b> (click the <i>Add Event</i> button and select <b>Create</b>)</li><br>
+	</ul>
+	
+			<img class="center" src="05_01_Create_Ball.png" alt="The Ball Object">
+
+	<p>
+		In the <b>Create</b> event we want the following code:
+		
+	<p class="code">
+		/// @description Init Vars<br>
+		go = false; // Controller variable to set when the ball is moving<br>
+		spd = 3; // The base speed of the ball<br>
+		dir = random_range(45, 135); // The initial direction of the ball<br>
+	</p>
+	
+	<p>
+		This object will also need a <b>Step Event</b>, so we'll add that now and give it the following code:
+		
+	<p class="code">
+		/// @description Ball Control<br>
+		// First check if the ball is moving...<br>
+		if !go<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;// Ball isn't moving so let's see if the game can be started by pressing "Space"<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;if keyboard_check_pressed(vk_space)<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// Set the ball speed and direction and the "go" variable so this code won't run again<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;go = true;<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;speed = spd;<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;direction = dir;<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;audio_play_sound(snd_Click, 0, false);<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+	</p>
+		
+	<p>
+		All we're doing here is polling the "Space" key while the "go" variable is set to <tt>false</tt>, but if a press of the key is detected, we play a sound and then set the ball in motion, setting "go" to <tt>true</tt> so we don't poll the keyboard anymore.
+		
+	<p>
+		That'll set our ball in motion, but what about when it reaches the edges of the game area? If we don't stop it, then it'll fly out the game room, which isn't really much fun! To prevent this we'll detect when the ball is in "collision" with the room boundary and react accordingly. Luckily for us, in the <b>Other</b> event category we have the <b>Intersect Boundary</b> event:
+		
+			<img class="center" src="05_02_BoundaryEvent.png" alt="The Intersect Boundary Event">
+		
+	<p>
+		Here we add the following code:
+		
+	<p class="code">
+		/// @description Bounce Or Die<br>
+		// Check if the ball is "colliding" with the left or right side of the room<br>
+		if bbox_left &lt; 0 || bbox_right &gt; room_width<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;// Make sure the ball stays within the room bounds<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;x = clamp(x, sprite_get_xoffset(sprite_index), room_width - sprite_get_xoffset(sprite_index));<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;// Reverse the horizontal component of the speed vector<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;hspeed *= -1;<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+		// Check if the ball is "colliding" with the top of the room<br>
+		if bbox_top &lt; 0<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;// Reverse the vertical component of the speed vector<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;vspeed *= -1;<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+		else<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;// Check if the ball is leaving the bottom of the room<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;if bbox_bottom &gt; room_height<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// The ball is leaving the room, so create a new one and destroy this one<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;instance_create_layer(xstart, ystart, layer, obj_Ball);<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;instance_destroy();<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+		// With each bounce, increase the ball speed up to a maximum of 12px per step<br>
+		if speed &lt; 12 speed += 0.1;<br>
+		audio_play_sound(snd_Bounce, 0, false);<br>
+		direction += 2 - random(4);<br>
+	</p>
+		
+	<p>
+		This code will check to see which side of the room the ball is about to exit and then reverse the horizontal or vertical speed accordingly (making it look like it's bouncing) while playing a sound, <i>except</i> if it goes out the bottom. In that case, the ball instance will be destroyed and a new one created. Note that at the end of the code we increase the ball speed by a tiny amount, play the "bounce" sound we added earlier, and we also add a small random amount between 2 and -2 to the direction of the ball. This is to prevent the ball possibly getting "stuck" bouncing at perfect 180&deg; angles between the wall and anything else.
+		
+	<p>
+		The next piece of code required for the ball will go in a <b>Collision Event</b>. A collision event is triggered when the object with the event comes into collision with the instance of another object which you specify. In this case, we are going to add a collision for the ball with the brick object, so click the <i>Add Event</i> button now and add a <b>Collision</b> event with the object "obj_Brick":
+		
+			<img class="center" src="05_03_BrickCollision.png" alt="Ball And Brick Collision Event">
+	
+	<p>
+		And in the script editor we will add this code:
+		
+	<p class="code">
+		/// @description Destroy Brick<br>
+		var _dir = direction - 180; // Get the direction back along the way the ball moved<br>
+		while (place_meeting(x, y, other)) // This loop will only run while a collision is detected<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;// Move the ball back along the direction it came from until no collision is detected</br>
+		&nbsp;&nbsp;&nbsp;&nbsp;x += lengthdir_x(1, _dir);<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;y += lengthdir_y(1, _dir);<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+		move_bounce_all(true); // Set the bounce angle<br>
+		if speed &lt; 12 speed += 0.1; // Make the ball faster<br>
+		audio_play_sound(snd_Break, 0, false);<br>
+		instance_destroy(other); // Destroy the "other" object in the collision, ie: the brick<br>
+	</p>
+	
+	<p>
+		When a collision event is triggered it is because the sprite bounding-box of one object is overlapping the sprite bounding-box of another, which in this case means that the ball is overlapping the brick. We want to simulate a bounce off the edge of the brick, but if they are overlapping (even if it's only by a couple of pixels) then this bounce will be wrong, so what this code does is it first moves the ball back along the direction it came from until the bounding-boxes of each instance in the collision are no longer overlapping (they could be considered "touching") and then uses the a GML function to calculate the bounce direction, before destroying the brick itself and playing a sound.
+		
+	<p>
+		Our final peice of code will go in another <b>Collision</b> event, this time with the bat. So, add a Collision event with "obj_Bat" and give it the following code:
+		
+	<p class="code">
+		/// @description Bounce<br>
+		vspeed *= -1; // Reverse the vertical speed<br>
+		var _s = speed; // Store the current speed<br>
+		var _dir = point_direction(other.x, other.y + 32, x, y);<br>
+		var _dist = point_distance(x, y, other.x, other.y + 32)<br>
+		// Add to direction based on position of bounce<br>
+		motion_add(_dir, _dist / 5);<br>
+		// Maintain the speed<br>
+		speed = _s;<br>
+		audio_play_sound(snd_Bounce, 0, false);<br>
+	</p>
+	
+	<p>
+		With this code we are setting the direction of the ball based on how far from the center of the bat the ball hit, so in this way we are giving the player a bit of control over the direction of the ball.
+		
+	<p>
+		It's time now to place all this into a room and test our game!
+
+<p>
+<br>
+</p>
+<p>
+
+</div>
+
+<div class="footer">
+	<div class="buttons">
+		<div class="clear">
+			<div style="float:left"> <!-- Set the previous  page to go to here -->
+				<a href="page04.html"  class="prev">
+					<div id="button-prev"></div>
+				</a>
+			</div>
+			<div style="float:right"> <!-- Button commented out as we are on the last page and can't go forward -->
+				<a href="page06.html" class="next">
+					<div id="button-next"></div>
+				</a>
+			</div>
+		</div>	
+	</div>
+<!-- Footer copyright notice - set this to your own or whatever is required (remove the text but leave the <h5> tags to just have the bar) -->
+<h5>&copy; Copyright YoYo Games Ltd. 2019 All Rights Reserved</h5>
+</div>
+
+</body>
+</html>

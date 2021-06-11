@@ -1,0 +1,216 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<!-- EDIT THIS-->
+		<title>GameMaker Tutorial</title>
+		<!-- DO NOT EDIT THIS-->
+		<meta http-equiv="X-UA-Compatible" content="IE=9" />
+		<link rel="stylesheet" href="style.css" type="text/css" media="screen" title="style" charset="UTF-8"/>
+		<script type="text/javascript">
+			var changePage = function(){
+				var newPage = document.getElementById("page-select");
+				window.location.replace(newPage.value);
+				}
+		</script>
+
+	</head>
+
+<!-- EDIT THIS - This section is where you can add an index to your tutorial -->
+<body>
+<!-- EDIT THIS - Your Tutorial title -->
+	<h2 style="border-radius:0.5em 0.5em 0 0; margin:0;">BreakThrough</h2>
+<!-- EDIT THIS - Here you list the pages in your tutorial, with the current one at the top -->
+		<div class="head">
+			<select id="page-select" onChange="changePage()">
+				<option value="page07.html"><b>Gameplay 1</b></option>
+				<option value="page08.html">Gameplay 2</option>
+				<option value="page09.html">Summary</option>
+				<optgroup label="----------------------------">
+					<option value="page01.html">Introduction</option>
+					<option value="page02.html">Sprites</option>
+					<option value="page03.html">Brick Object</option>
+					<option value="page04.html">Bat Object</option>
+					<option value="page05.html">Ball Object</option>
+					<option value="page06.html">Rooms</option>
+			  </optgroup>
+			</select>
+		</div>
+	
+<!-- EDIT THIS - Main tutorial body goes here -->
+<div class="body-scroll">
+	<p>
+		The time has come to test our game! This is the easy part as you're required to do is press the "play" button <img style="vertical-align:middle" src="Icon_Play.png"> at the top of the <i>GameMaker Studio 2</i> IDE. If all has gone correctly, your game will run and you can play it using the "Space" key and the Arrow keys:
+		
+			<img class="center" src="07_01_Gameplay.gif" alt="Finished Gameplay">
+
+	<p>
+		This is a great start, but it's missing a few things to make it a "complete" game - namely player lives and a score. We want the game to give you three "lives" and keep track of the score you get from each brick destroyed, so for that we are going to make a <i>controller</i> object (A controller object is simply an object in your game that is designed to control the things that go on in the background, and it usually doesn't have a sprite assigned to it although it can have, and it can also draw stuff independently as we'll see).
+		
+	<p>
+		Before adding the controller however, let's add a <b>Font</b> resource, as we'll want our controller to draw some text to the screen later. To add a font, simply right click <img style="vertical-align:middle" src="Icon_LMB.png"> on the <i>Fonts</i> resource and select <i>Create Font</i>. In the font window that opens, name the font "fnt_Game" and then select something that you think is appropriate, setting the size to something like 20:
+		
+			<img class="center" src="07_02_AddFont.png" alt="Adding A Font Resource">	
+	
+	<p>
+		You can close the Font editor now.
+		
+	<p>
+		For our controller you will need to create a new object, call it "obj_Control", and then add a <b>Create</b> event with the following code:
+		
+	<p class="code">
+		/// @description Init Vars<br>
+		state = "START"<br>
+	</p>
+		
+	<p>
+	  We'll be using this variable to set the "state" of the controller so that it knows whether the game has to start, is being played, or is finished. Apart from this, we'll also use the <b>Game Start</b> event to initialise some <i>global</i> variables:
+	  
+		<img class="center" src="07_03_GameStart.png" alt="The Game Start Event">	
+  
+	<p>
+		In this event add this code:
+	
+	<p class="code">
+		/// @description Init Global Vars<br>
+		global.player_score = 0;<br>
+		global.player_lives = 3;<br>
+		global.high_score = 0;<br>
+	</p>
+	
+	<p>
+		These global variables will permit us to keep track of important values without having to worry about which instance of an object is accessing them or changing them, and by initialising them in the Game Start event, they will only be initialised once even if we restart the room (but if we restart the <i>game</i> they will be reinitialised).
+		
+	<p>
+		We now need to draw the score and lives of the player to the screen so you'll need to add a <b>Draw</b> event to the object. Note that like the Step event category, the Draw event has a number of different event types that can be used, but for this game simply use the regular <b>Draw</b> event (you can find out more about the different draw events <a href="gms2tutorials:///ShowHelp?tag=draw_event">from the manual</a>):
+		
+			<img class="center" src="07_04_AddDrawEvent.png" alt="Add A Draw Event">	
+	
+	<p>
+		In this event we'll need the following code:
+		
+	<p class="code">
+		/// @description Draw Values<br>
+		// Set draw properties<br>
+		draw_set_colour(c_white);<br>
+		draw_set_font(fnt_Game);<br>
+		// Draw the player score<br>
+		draw_set_halign(fa_left);<br>
+		draw_text(8, 8, "Score: " + string(global.player_score));<br>
+		// Draw the high score<br>
+		draw_set_halign(fa_right);<br>
+		draw_text(room_width - 8, 8, "Hi Score: " + string(global.high_score));<br>
+		// Draw the player lives as sprites<br>
+		var _x = (room_width / 2) - (32 * (global.player_lives - 1));<br>
+		repeat(global.player_lives)<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;draw_sprite_ext(spr_Bat, 0, _x, room_height - 16, 0.75, 0.75, 1, c_white, 0.5);<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;_x += 64;<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+	</p>
+	
+	<p>
+		Here we are drawing the score across the top of the room, and then a series of sprites (scaled down) to represent the player lives at the bottom. 
+		
+	<p>
+		We need to add one final event to this controller object, a <b>Step</b> event. Add this now, and give it the following code:
+		
+	<p class="code">
+		/// @description Check Room Restart<br>
+		if instance_number(obj_Brick) &lt;= 0<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;room_restart();<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+		else<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;if state == "GAMEOVER"<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if keyboard_check(vk_anykey)<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;audio_play_sound(snd_Click, 0, false);<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;global.player_score = 0;<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;global.player_lives = 3;<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;room_restart();<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+	</p>
+	
+	<p>
+		Here we're going to simply restart the room when the player destroys all the bricks (and because we are using global variables, this will not reset the score or lives), or we'll wait for the player to restart the room if all the lives are gone.
+		
+	<p>
+		Now that we have that done, and before continuing on to do anything else, open the Room Editor and add this object into the game anywhere then close the room editor again...
+		
+	<p>
+		Before we go on to test this, we need to add a few extra lines of code to our object "obj_Ball", so open that now. We need to calculate the score and tell the controller when the player has a lost a life, etc... so to start with we'll edit the <b>Collision</b> event with the <b>brick</b> object so that it adds to the global score variable. You want to add the following <i>after</i> the <tt>move_bounce_all()</tt> function call:
+		
+	<p class="code">
+		global.player_score += 15; // Add to the score
+	</p>
+	
+	<p>
+		The code will now look like this:
+		
+			<img class="center" src="07_05_CollisionBrick.png" alt="Add Score When Colliding With A Brick">	
+	
+	<p>
+		We also need to modify the <b>Intersect Boundary</b> event with this code added into the block <tt>if bbox_bottom &gt; room_height</tt>:
+
+	<p class="code">
+		global.player_lives -= 1;<br>
+		if global.player_lives &lt;= 0<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;// Check for new highscore<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;if global.player_score &gt; global.high_score<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;global.high_score = global.player_score;<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;// Set controller state<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;with (obj_Control)<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;state ="GAMEOVER"<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+		else<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;// Only create a new ball if the player has lives<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;instance_create_layer(xstart, ystart, layer, obj_Ball);<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+	</p>
+	
+	<p>
+		This code block will now look like this:
+		
+			<img class="center" src="07_06_CollisionBrick.png" alt="Restart Game If No Balls Left">	
+
+	<p>
+		Go ahead and play the game now! If all has gone well, you should see intro text on the screen, a score that changes as you play, lives as markers along the bottom and the game should change according to whether you have no lives left or you destroy all the bricks.
+		
+<p>
+<br>
+</p>
+<p>
+
+</div>
+
+<div class="footer">
+	<div class="buttons">
+		<div class="clear">
+			<div style="float:left"> <!-- Set the previous  page to go to here -->
+				<a href="page06.html"  class="prev">
+					<div id="button-prev"></div>
+				</a>
+			</div>
+			<div style="float:right"> <!-- Button commented out as we are on the last page and can't go forward -->
+				<a href="page08.html" class="next">
+					<div id="button-next"></div>
+				</a>
+			</div>
+		</div>	
+	</div>
+<!-- Footer copyright notice - set this to your own or whatever is required (remove the text but leave the <h5> tags to just have the bar) -->
+<h5>&copy; Copyright YoYo Games Ltd. 2019 All Rights Reserved</h5>
+</div>
+
+</body>
+</html>
