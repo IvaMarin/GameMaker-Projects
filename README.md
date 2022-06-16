@@ -1,2 +1,3 @@
 # GameMaker Projects
-some GameMaker projects made with youtube tutorials
+
+some GameMaker projects made with YouTube tutorials
