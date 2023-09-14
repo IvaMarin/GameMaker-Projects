@@ -1,0 +1,20 @@
+{
+  "FolderOrderSettings": [],
+  "ResourceOrderSettings": [
+    {"name":"spr_bullet","order":6,"path":"sprites/spr_bullet/spr_bullet.yy",},
+    {"name":"spr_enemy_run","order":9,"path":"sprites/spr_enemy_run/spr_enemy_run.yy",},
+    {"name":"spr_player_jump","order":4,"path":"sprites/spr_player_jump/spr_player_jump.yy",},
+    {"name":"spr_player_run","order":3,"path":"sprites/spr_player_run/spr_player_run.yy",},
+    {"name":"spr_wall","order":1,"path":"sprites/spr_wall/spr_wall.yy",},
+    {"name":"obj_enemy","order":4,"path":"objects/obj_enemy/obj_enemy.yy",},
+    {"name":"obj_wall","order":1,"path":"objects/obj_wall/obj_wall.yy",},
+    {"name":"spr_gun","order":5,"path":"sprites/spr_gun/spr_gun.yy",},
+    {"name":"spr_enemy_dead","order":10,"path":"sprites/spr_enemy_dead/spr_enemy_dead.yy",},
+    {"name":"obj_bullet","order":3,"path":"objects/obj_bullet/obj_bullet.yy",},
+    {"name":"obj_enemy_corpse","order":5,"path":"objects/obj_enemy_corpse/obj_enemy_corpse.yy",},
+    {"name":"spr_player","order":2,"path":"sprites/spr_player/spr_player.yy",},
+    {"name":"spr_enemy_jump","order":8,"path":"sprites/spr_enemy_jump/spr_enemy_jump.yy",},
+    {"name":"spr_enemy","order":7,"path":"sprites/spr_enemy/spr_enemy.yy",},
+    {"name":"obj_gun","order":2,"path":"objects/obj_gun/obj_gun.yy",},
+  ],
+}

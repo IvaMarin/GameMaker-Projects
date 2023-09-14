@@ -1,0 +1,18 @@
+{
+  "FolderOrderSettings": [],
+  "ResourceOrderSettings": [
+    {"name":"spr_playerAir","order":3,"path":"sprites/spr_playerAir/spr_playerAir.yy",},
+    {"name":"spr_walls","order":7,"path":"sprites/spr_walls/spr_walls.yy",},
+    {"name":"spr_grain","order":6,"path":"sprites/spr_grain/spr_grain.yy",},
+    {"name":"spr_clouds","order":5,"path":"sprites/spr_clouds/spr_clouds.yy",},
+    {"name":"rm_lvl_2","order":1,"path":"rooms/rm_lvl_2/rm_lvl_2.yy",},
+    {"name":"obj_wall","order":1,"path":"objects/obj_wall/obj_wall.yy",},
+    {"name":"spr_invisibleWall","order":1,"path":"sprites/spr_invisibleWall/spr_invisibleWall.yy",},
+    {"name":"rm_lvl_3","order":2,"path":"rooms/rm_lvl_3/rm_lvl_3.yy",},
+    {"name":"rm_lvl_4","order":3,"path":"rooms/rm_lvl_4/rm_lvl_4.yy",},
+    {"name":"obj_fullscreen","order":2,"path":"objects/obj_fullscreen/obj_fullscreen.yy",},
+    {"name":"spr_player","order":2,"path":"sprites/spr_player/spr_player.yy",},
+    {"name":"spr_playerRun","order":8,"path":"sprites/spr_playerRun/spr_playerRun.yy",},
+    {"name":"spr_background","order":4,"path":"sprites/spr_background/spr_background.yy",},
+  ],
+}

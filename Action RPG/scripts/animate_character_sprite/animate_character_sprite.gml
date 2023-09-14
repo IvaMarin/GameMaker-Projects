@@ -1,3 +1,6 @@
+// macros are constants that are called in a compile time
+#macro FRAME_RATE 60
+
 // Update sprite
 function animate_character_sprite() {
 	// convert degrees (0, ..., 360) into a number (0, 1, 2, 3)

@@ -1,12 +1,11 @@
 {
-  "isDnD": false,
-  "isCompatibility": false,
-  "parent": {
-    "name": "Скрипты",
-    "path": "folders/Скрипты.yy",
-  },
+  "resourceType": "GMScript",
   "resourceVersion": "1.0",
   "name": "animate_character_sprite",
-  "tags": [],
-  "resourceType": "GMScript",
+  "isCompatibility": false,
+  "isDnD": false,
+  "parent": {
+    "name": "Scripts",
+    "path": "folders/Scripts.yy",
+  },
 }

@@ -1,0 +1,7 @@
+{
+  "FolderOrderSettings": [],
+  "ResourceOrderSettings": [
+    {"name":"character_run_spr","order":1,"path":"sprites/character_run_spr/character_run_spr.yy",},
+    {"name":"animate_character_sprite","order":1,"path":"scripts/animate_character_sprite/animate_character_sprite.yy",},
+  ],
+}
